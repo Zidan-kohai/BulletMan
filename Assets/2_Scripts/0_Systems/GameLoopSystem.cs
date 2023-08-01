@@ -18,6 +18,14 @@ public sealed class GameLoopSystem : GameSystem
         }
     }
 
+    public void Update()
+    {
+        for (int i = 0; i < System.Count; i++)
+        {
+            System[i].EveryUpdate();
+        }
+    }
+
     public override void Destroy()
     {
     }
