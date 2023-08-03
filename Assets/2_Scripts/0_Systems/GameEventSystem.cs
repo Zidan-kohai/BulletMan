@@ -4,14 +4,8 @@ using UnityEngine;
 
 public class GameEventSystem : GameSystem
 {
-    public static GameEventSystem Instance;
     public override void Init()
-    {
-        if(Instance != null)
-        {
-            return;
-        }
-        Instance = this;
+    { 
     }
 
     private Action mouseUnder;
@@ -23,7 +17,7 @@ public class GameEventSystem : GameSystem
     #region MouseUnder
     public void SubscribeOnMouseUnder(Action sender)
     {
-        if(mouseUnder != null)
+        if(mouseUnder == null)
         {
             mouseUnder = sender;
         }
@@ -45,7 +39,7 @@ public class GameEventSystem : GameSystem
     #region MouseAbove
     public void SubscribeOnMouseAbove(Action sender)
     {
-        if (mouseAbove != null)
+        if (mouseAbove == null)
         {
             mouseAbove = sender;
         }
@@ -67,7 +61,7 @@ public class GameEventSystem : GameSystem
     #region MousePosition
     public void SubscribeOnMousePosition(Action<Vector2> sender)
     {
-        if (mousePosition != null)
+        if (mousePosition == null)
         {
             mousePosition = sender;
         }
@@ -80,7 +74,7 @@ public class GameEventSystem : GameSystem
     {
         mousePosition -= sender;
     }
-    public void OnMMousePosition(Vector2 Position)
+    public void OnMousePosition(Vector2 Position)
     {
         mousePosition?.Invoke(Position);
     }

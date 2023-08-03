@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class GameObjectSystem : GameSystem
 {  
-    private List<object> dinamicObject = new();
-    private List<object> staticObject = new();
+    private List<MonoBehaviour> dinamicObject = new();
+    private List<MonoBehaviour> staticObject = new();
 
 
     public override void Init()
@@ -15,7 +16,7 @@ public class GameObjectSystem : GameSystem
 
     }
 
-    private void AddObject(object obj)
+    private void AddObject(MonoBehaviour obj)
     {
         if (obj is IDinamicObject && !dinamicObject.Contains(obj))
         {
@@ -30,7 +31,7 @@ public class GameObjectSystem : GameSystem
         }
     }
 
-    private void RemoveObject(object obj)
+    private void RemoveObject(MonoBehaviour obj)
     {
         foreach (var item in dinamicObject)
         {

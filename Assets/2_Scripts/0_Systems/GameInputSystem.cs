@@ -11,4 +11,9 @@ public class GameInputSystem : GameSystem
     {
 
     }
+
+    public override void EveryUpdate()
+    {
+        GameLoopSystem.Instance.GetSystem<GameEventSystem>().OnMousePosition(Input.mousePosition);
+    }
 }
