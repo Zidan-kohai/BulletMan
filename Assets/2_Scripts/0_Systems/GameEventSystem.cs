@@ -8,14 +8,16 @@ public class GameEventSystem : GameSystem
     { 
     }
 
-    private Action mouseUnder;
-    private Action mouseAbove;
+    private Action<Vector2> mouseUnder;
+    private Action<Vector2> mouseAbove;
     private Action<Vector2> mousePosition;
+    private Action<MonoBehaviour> spawnObject;
+
 
     #region Mouse
 
     #region MouseUnder
-    public void SubscribeOnMouseUnder(Action sender)
+    public void SubscribeOnMouseUnder(Action<Vector2> sender)
     {
         if(mouseUnder == null)
         {
@@ -26,18 +28,18 @@ public class GameEventSystem : GameSystem
             mouseUnder += sender;
         }
     }
-    public void UnsubscribeOnMouseUnder(Action sender)
+    public void UnsubscribeOnMouseUnder(Action<Vector2> sender)
     {
         mouseUnder -= sender;
     }
-    public void OnMouseUnder()
+    public void OnMouseUnder(Vector2 Position)
     {
-        mouseUnder?.Invoke();
+        mouseUnder?.Invoke(Position);
     }
     #endregion
 
     #region MouseAbove
-    public void SubscribeOnMouseAbove(Action sender)
+    public void SubscribeOnMouseAbove(Action<Vector2> sender)
     {
         if (mouseAbove == null)
         {
@@ -48,13 +50,13 @@ public class GameEventSystem : GameSystem
             mouseAbove += sender;
         }
     }
-    public void UnsubscribeOnMouseAbove(Action sender)
+    public void UnsubscribeOnMouseAbove(Action<Vector2> sender)
     {
         mouseAbove -= sender;
     }
-    public void OnMouseAbove()
+    public void OnMouseAbove(Vector2 Position)
     {
-        mouseAbove?.Invoke();
+        mouseAbove?.Invoke(Position);
     }
     #endregion
 
@@ -83,7 +85,27 @@ public class GameEventSystem : GameSystem
 
     #endregion
 
-
+    #region SpawnObject
+    public void SubscribeOnSpawnObject(Action<MonoBehaviour> sender)
+    {
+        if (spawnObject == null)
+        {
+            spawnObject = sender;
+        }
+        if (spawnObject.GetInvocationList().Length > 0 && !spawnObject.GetInvocationList().Contains(sender))
+        {
+            spawnObject += sender;
+        }
+    }
+    public void UnsubscribeOnSpawnObject(Action<MonoBehaviour> sender)
+    {
+        spawnObject -= sender;
+    }
+    public void OnSpawnObject(MonoBehaviour obj)
+    {
+        spawnObject?.Invoke(obj);
+    }
+    #endregion
     public override void Destroy()
     {
 

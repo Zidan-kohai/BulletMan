@@ -33,7 +33,7 @@ public sealed class GameLoopSystem : GameSystem
     {
         for (int i = 0; i < systems.Count; i++)
         {
-            systems[i].EveryUpdate();
+            systems[i].EveryFrame();
         }
     }
 

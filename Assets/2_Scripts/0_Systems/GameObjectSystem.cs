@@ -6,6 +6,13 @@ public class GameObjectSystem : GameSystem
     private List<MonoBehaviour> dinamicObject = new();
     private List<MonoBehaviour> staticObject = new();
 
+    [Header("Dinamic Object")]
+    [SerializeField] private Transform heroParent;
+    [SerializeField] private Transform enemyParent;
+    [SerializeField] private Transform interactiveObjectParent;
+
+    [Header("Static Object")]
+    [SerializeField] private Transform staticParent;
 
     public override void Init()
     {
@@ -13,19 +20,33 @@ public class GameObjectSystem : GameSystem
     }
     public override void AfterInit()
     {
-
+        GameLoopSystem.Instance.GetSystem<GameEventSystem>().SubscribeOnSpawnObject(AddObject);
     }
 
     private void AddObject(MonoBehaviour obj)
     {
         if (obj is IDinamicObject && !dinamicObject.Contains(obj))
         {
+            if(obj is Player)
+            {
+                obj.transform.parent = heroParent;
+            }
+            else if(obj is Enemy) {
+
+                obj.transform.parent = enemyParent;
+            }
+            else
+            {
+                obj.transform.parent = interactiveObjectParent;
+            }
+
             dinamicObject.Add(obj);
             return;
         }
 
         if(!staticObject.Contains(obj))
         {
+            obj.transform.parent = staticParent;
             staticObject.Add(obj);
             return;
         }
@@ -55,6 +76,7 @@ public class GameObjectSystem : GameSystem
 
     public override void Destroy()
     {
+        GameLoopSystem.Instance.GetSystem<GameEventSystem>().UnsubscribeOnSpawnObject(AddObject);
     }
 
     public void OnDestroy() 
