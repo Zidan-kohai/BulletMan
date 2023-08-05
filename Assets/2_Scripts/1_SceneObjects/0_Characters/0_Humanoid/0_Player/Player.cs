@@ -1,7 +1,11 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IDinamicObject
 {
+    [Header("General")]
+    [SerializeField] private float waitToReady;
+
     [Header("Hand")]
     [SerializeField] private Transform hand;
     [SerializeField] private float AndleOfset;
@@ -15,14 +19,18 @@ public class Player : MonoBehaviour, IDinamicObject
 
     private void OnEnable()
     {
-        Invoke("Subscribe", 0.5f);
+        OnSpawn(waitToReady);
     }
 
-    private void Subscribe()
+    public void OnSpawn(float waitToReady)
     {
-        GameLoopSystem.Instance.GetSystem<GameEventSystem>().SubscribeOnMouseUnder(OnMouseUnder);
-        GameLoopSystem.Instance.GetSystem<GameEventSystem>().SubscribeOnMouseAbove(OnMouseAbove);
-        GameLoopSystem.Instance.GetSystem<GameEventSystem>().OnSpawnObject(this);
+        DOTween.Sequence().AppendInterval(waitToReady).OnComplete(() =>
+        {
+            GameLoopSystem.Instance.GetSystem<GameEventSystem>().SubscribeOnMouseUnder(OnMouseUnder);
+            GameLoopSystem.Instance.GetSystem<GameEventSystem>().SubscribeOnMouseAbove(OnMouseAbove);
+            GameLoopSystem.Instance.GetSystem<GameEventSystem>().OnSpawnObject(this);
+
+        }).SetLink(gameObject);
     }
 
     public void EveryFrame()
