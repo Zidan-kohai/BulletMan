@@ -46,6 +46,7 @@ public sealed class GameLoopSystem : GameSystem
             if(item is T find) 
             {
                 system = find;
+                return true;
             }
         }
         system = default(T);

@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour, IDinamicObject
         Invoke("OnSpawn", waitToReady);
     }
 
-    public void OnSpawn(float waitToReady)
+    public void OnSpawn()
     {
         if (GameLoopSystem.Instance.GetSystem(out GameEventSystem system))
         {
