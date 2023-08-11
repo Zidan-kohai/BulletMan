@@ -1,4 +1,3 @@
-using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,18 +21,17 @@ public class Enemy : MonoBehaviour, IDinamicObject
 
     private void OnEnable()
     {
-        OnSpawn(waitToReady);
+        Invoke("OnSpawn", waitToReady);
     }
 
     public void OnSpawn(float waitToReady)
     {
-        DOTween.Sequence().AppendInterval(waitToReady).OnComplete(() =>
+        if (GameLoopSystem.Instance.GetSystem(out GameEventSystem system))
         {
-            GameLoopSystem.Instance.GetSystem<GameEventSystem>().OnSpawnObject(this);
+            system.OnSpawnObject(this);
+        }
 
-            IgnoreCollision();
-
-        }).SetLink(gameObject);
+        IgnoreCollision();
     }
 
     private void IgnoreCollision()

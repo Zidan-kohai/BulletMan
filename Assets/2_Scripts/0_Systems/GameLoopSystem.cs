@@ -3,7 +3,9 @@ using UnityEngine;
 
 public sealed class GameLoopSystem : GameSystem
 {
-    public static GameLoopSystem Instance;
+    private static GameLoopSystem instance;
+
+    public static GameLoopSystem Instance { get { return instance; } }
 
     [SerializeField] private List<GameSystem> systems;
 
@@ -22,11 +24,11 @@ public sealed class GameLoopSystem : GameSystem
 
     public override void Init()
     {
-        if(Instance != null)
+        if(instance != null)
         {
             return;
         }
-        Instance = this;
+        instance = this;
     }
 
     public void Update()
@@ -37,17 +39,17 @@ public sealed class GameLoopSystem : GameSystem
         }
     }
 
-    public T GetSystem<T>()
+    public bool GetSystem<T>(out T system) where T : GameSystem
     {
-        foreach (var system in systems)
+        foreach (var item in systems)
         {
-            if(system is T find) 
+            if(item is T find) 
             {
-                return find;
+                system = find;
             }
         }
-
-        return default(T);
+        system = default(T);
+        return false;
     }
 
     public override void Destroy()

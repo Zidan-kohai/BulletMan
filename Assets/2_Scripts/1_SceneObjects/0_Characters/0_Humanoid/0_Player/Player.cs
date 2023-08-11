@@ -19,18 +19,17 @@ public class Player : MonoBehaviour, IDinamicObject
 
     private void OnEnable()
     {
-        OnSpawn(waitToReady);
+        Invoke("OnSpawn", waitToReady);
     }
 
     public void OnSpawn(float waitToReady)
     {
-        DOTween.Sequence().AppendInterval(waitToReady).OnComplete(() =>
+        if (GameLoopSystem.Instance.GetSystem(out GameEventSystem system))
         {
-            GameLoopSystem.Instance.GetSystem<GameEventSystem>().SubscribeOnMouseUnder(OnMouseUnder);
-            GameLoopSystem.Instance.GetSystem<GameEventSystem>().SubscribeOnMouseAbove(OnMouseAbove);
-            GameLoopSystem.Instance.GetSystem<GameEventSystem>().OnSpawnObject(this);
-
-        }).SetLink(gameObject);
+            system.SubscribeOnMouseUnder(OnMouseUnder);
+            system.SubscribeOnMouseAbove(OnMouseAbove);
+            system.OnSpawnObject(this);
+        }
     }
 
     public void EveryFrame()
@@ -75,7 +74,10 @@ public class Player : MonoBehaviour, IDinamicObject
 
     private void OnDestroy()
     {
-        GameLoopSystem.Instance.GetSystem<GameEventSystem>().UnsubscribeOnMouseUnder(OnMouseUnder);
-        GameLoopSystem.Instance.GetSystem<GameEventSystem>().UnsubscribeOnMouseAbove(OnMouseAbove);
+        if (GameLoopSystem.Instance.GetSystem<GameEventSystem>(out GameEventSystem system))
+        {
+            system.UnsubscribeOnMouseUnder(OnMouseUnder);
+            system.UnsubscribeOnMouseAbove(OnMouseAbove);
+        }
     }
 }

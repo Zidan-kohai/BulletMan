@@ -20,7 +20,10 @@ public class GameObjectSystem : GameSystem
     }
     public override void AfterInit()
     {
-        GameLoopSystem.Instance.GetSystem<GameEventSystem>().SubscribeOnSpawnObject(AddObject);
+        if (GameLoopSystem.Instance.GetSystem(out GameEventSystem system))
+        {
+            system.SubscribeOnSpawnObject(AddObject);
+        }
     }
 
     private void AddObject(MonoBehaviour obj)
@@ -76,7 +79,10 @@ public class GameObjectSystem : GameSystem
 
     public override void Destroy()
     {
-        GameLoopSystem.Instance.GetSystem<GameEventSystem>().UnsubscribeOnSpawnObject(AddObject);
+        if (GameLoopSystem.Instance.GetSystem(out GameEventSystem system))
+        {
+            system.UnsubscribeOnSpawnObject(AddObject);
+        }
     }
 
     public void OnDestroy() 
