@@ -41,9 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: StaticObject
+    uniqueID: 3959385357
+    locked: 0
   - name: DinamicObject
     uniqueID: 1466066079
     locked: 0
-  - name: StaticObject
-    uniqueID: 3959385357
+  - name: UI
+    uniqueID: 1954015849
     locked: 0
